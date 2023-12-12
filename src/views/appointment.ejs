@@ -1,0 +1,92 @@
+<!-- appointment.ejs -->
+
+<%- include("layout/header") %>
+<main
+  class="d-flex justify-content-center align-items-center min-vh-100 custom-padding"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">Appointment</h2>
+            <form action="/getAvailableTimeSlots" method="post">
+              <div class="mb-3">
+                <label for="date" class="form-label">Date:</label>
+                <input
+                  type="date"
+                  id="date"
+                  name="date"
+                  class="form-control"
+                  required
+                  value="<%= data.date || '' %>"
+                  min="<%= new Date().toISOString().split('T')[0] %>"
+                />
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">
+                  Show Available Time Slots
+                </button>
+              </div>
+            </form>
+            <% if (data?.availableTimeSlots) { %>
+            <div class="mb-3">
+              <label for="time" class="form-label">Available Time Slots:</label>
+              <div
+                class="flex-wrap"
+                role="group"
+                aria-label="Available Time Slots"
+              >
+                <% data?.availableTimeSlots.forEach((time) => { %>
+                <button
+                  type="button"
+                  class="btn btn-primary mb-2"
+                  style="width: 19.3%"
+                  onclick="selectTime('<%= time %>')"
+                >
+                  <%= time %>
+                </button>
+                <% }); %>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="bookAppointment()">
+              Book Appointment
+            </button>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+  let time;
+  function selectTime(selectedTime) {
+    time = selectedTime;
+  }
+
+  async function bookAppointment() {
+    // const selectedTime = document.getElementById("selectedTime").value;
+    const selectedDate = document.getElementById("date").value;
+    try {
+      const response = await fetch("/bookAppointment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ time, date: selectedDate }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        window.location.href = "/successAppointment";
+      } else {
+        console.error(data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  }
+</script>
+<%- include("layout/footer") %>

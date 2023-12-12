@@ -1,0 +1,27 @@
+<!-- successAppointment.ejs -->
+
+<%- include("layout/header") %>
+<main
+  class="d-flex justify-content-center align-items-center min-vh-100 custom-padding"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">
+              Appointment Created Successfully
+            </h2>
+            <p class="text-center">
+              Your appointment slot has been successfully created.
+            </p>
+            <a href="/appointment" class="btn btn-primary">
+              Create Another Appointment
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<%- include("layout/footer") %>

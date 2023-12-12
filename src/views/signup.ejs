@@ -1,0 +1,107 @@
+<%- include("layout/header") %>
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-4">
+      <div class="card form-container">
+        <div class="card-header h3 text-center" style="color: #ffffff">
+          Sign Up
+        </div>
+        <div class="card-body">
+          <form action="/signup" method="POST">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                name="username"
+                value="<%= data && Object.keys(data).length && data.username ? data.username : '' %>"
+                required
+              />
+              <% if (typeof errors != "undefined" && errors.username) { %>
+              <p class="text-danger"><%= errors.username %></p>
+              <% } %>
+            </div>
+            <div class="form-group" style="margin-top: 10px">
+              <!-- Add space here -->
+              <label for="password">Password</label>
+              <div class="input-group">
+                <input
+                  type="password"
+                  class="form-control"
+                  id="password"
+                  name="password"
+                  value="<%= data && Object.keys(data).length && data.password ? data.password : '' %>"
+                  required
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    id="password-toggle"
+                  >
+                    Show
+                  </button>
+                </div>
+              </div>
+              <% if (typeof errors !== "undefined" && errors.password) { %>
+              <p class="text-danger"><%= errors.password %></p>
+              <% } %>
+            </div>
+            <div class="form-group" style="margin-top: 10px">
+              <label for="confirmPassword">Confirm Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="confirmPassword"
+                name="confirmPassword"
+                value="<%= data && Object.keys(data).length && data.confirmPassword ? data.confirmPassword : '' %>"
+                required
+              />
+              <% if (typeof errors !== "undefined" && errors.confirmPassword) {
+              %>
+              <p class="text-danger"><%= errors.confirmPassword %></p>
+              <% } %>
+            </div>
+            <div class="form-group" style="margin-top: 10px">
+              <label for="userType">User Type</label>
+              <select
+                class="form-control"
+                id="userType"
+                name="userType"
+                required
+              >
+                <option value="Driver">Driver</option>
+                <option value="Examiner">Examiner</option>
+                <option value="Admin">Admin</option>
+              </select>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary btn-block mt-3 w-100 bg-red"
+            >
+              Sign Up
+            </button>
+          </form>
+          <p class="text-white my-2">Don't have an account? <a href="/login">Log In</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<%- include("layout/footer") %>
+
+<script>
+  const passwordInput = document.getElementById("password");
+  const passwordToggle = document.getElementById("password-toggle");
+
+  passwordToggle.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      passwordToggle.textContent = "Hide";
+    } else {
+      passwordInput.type = "password";
+      passwordToggle.textContent = "Show";
+    }
+  });
+</script>

@@ -1,0 +1,106 @@
+<%- include("layout/header") %>
+<main
+  class="d-flex justify-content-center align-items-center min-vh-100 custom-padding"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3 form-container">
+        <h2>G Test Form</h2>
+        <% if (data && Object.keys(data).length !== 0) { %>
+        <div class="mt-4" id="dataDisplay" style="display: block">
+          <div class="text-white p-3">
+            <h4>Details:</h4>
+            <p>
+              <strong>First Name:</strong>
+              <%= data.firstName %>
+            </p>
+            <p>
+              <strong>Last Name:</strong>
+              <%= data.lastName %>
+            </p>
+            <p>
+              <strong>Age:</strong>
+              <%= data.age %>
+            </p>
+            <p>
+              <strong>Appointment:</strong>
+              <% if (data.appointmentDate && data.appointmentTime) { %> <%=
+              data.appointmentDate %> at <%= data.appointmentTime %> <% } else {
+              %> No appointment scheduled. <% } %>
+            </p>
+            <p>
+              <strong>License Number:</strong>
+              <%= data.licenseNumber %>
+            </p>
+            <form action="/gTest" method="POST">
+              <div class="mb-3">
+                <label for="carDetails" class="form-label">Car Details</label>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="make"
+                    name="make"
+                    placeholder="Make"
+                    value="<%= data.carDetails?.make %>"
+                  />
+                  <% if (typeof errors != "undefined" && errors.make) { %>
+                  <p class="text-danger"><%= errors.make %></p>
+                  <% } %>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    id="model"
+                    name="model"
+                    placeholder="Model"
+                    value="<%= data.carDetails?.model %>"
+                  />
+                  <% if (typeof errors != "undefined" && errors.model) { %>
+                  <p class="text-danger"><%= errors.model %></p>
+                  <% } %>
+                  <input
+                    type="number"
+                    class="form-control mt-2"
+                    id="year"
+                    name="year"
+                    placeholder="Year"
+                    value="<%= data.carDetails?.year %>"
+                  />
+                  <% if (typeof errors != "undefined" && errors.year) { %>
+                  <p class="text-danger"><%= errors.year %></p>
+                  <% } %>
+                  <input
+                    type="text"
+                    class="form-control mt-2"
+                    id="plateNumber"
+                    name="plateNumber"
+                    placeholder="Plate Number"
+                    value="<%= data.carDetails?.plateNumber %>"
+                  />
+                  <% if (typeof errors != "undefined" && errors.plateNumber) {
+                  %>
+                  <p class="text-danger"><%= errors.plateNumber %></p>
+                  <% } %>
+                </div>
+              </div>
+              <button
+                type="submit"
+                class="btn btn-primary w-100 my-3"
+                id="updateCarDetailsButton"
+              >
+                Update Car Details
+              </button>
+            </form>
+          </div>
+        </div>
+        <% } else {%>
+        <div></div>
+        <% }%> <% if (success && message.length > 0) { %>
+        <div id="responseMessage" class="mt-3 text-success"><%= message %></div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include("layout/footer") %>

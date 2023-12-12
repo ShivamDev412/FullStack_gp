@@ -1,0 +1,52 @@
+<%- include("layout/header") %>
+<main
+  class="d-flex justify-content-center align-items-center min-vh-100 custom-padding"
+>
+  <div class="appointment-form-container">
+    <form action="/findAppointmentSlot" method="post" class="mb-4">
+      <div class="mb-3">
+        <label for="appointmentDate" class="form-label text-white"
+          >Appointment Date</label
+        >
+        <input type="date" class="form-control flatpickr" id="appointmentDate"
+        name="appointmentDate" value="<%= data.date === "" ? "" : data.date %>"
+        placeholder="Select appointment date" data-input required /> <% if
+        (typeof errors != "undefined" && errors.appointmentDate) { %>
+        <p class="text-danger"><%= errors.appointmentDate %></p>
+        <% } %>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">
+        Find Appointment
+      </button>
+    </form>
+
+    <% if (data.appointmentsSlots && data.appointmentsSlots.length > 0) { %>
+    <form action="/bookAppointmentSlot/?date=<%= data.date %>" method="post">
+      <div class="mb-3">
+        <label for="appointmentTimeSlot" class="form-label"
+          >Appointment Time Slot</label
+        >
+        <select
+          name="appointmentTimeSlot"
+          id="appointmentTimeSlot"
+          class="form-control"
+          name="appointmentTimeSlot"
+        >
+          <% data.appointmentsSlots.forEach(slot => { %> <% if
+          (slot.isTimeSlotAvailable) { %>
+          <option value="<%= slot.time %>"><%= slot.time %></option>
+          <% } else { %>
+          <option disabled value="<%= slot.time %>">
+            <%= slot.time %> (Not Available)
+          </option>
+          <% } %> <% }) %>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">
+        Book Appointment
+      </button>
+    </form>
+    <% } %>
+  </div>
+</main>
+<%- include("layout/footer") %>
