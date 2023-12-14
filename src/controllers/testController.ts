@@ -31,7 +31,7 @@ const getG2Test = async (req: Request, res: Response) => {
     if (user && user.appointmentId) {
       // Assuming there is a relationship between User and Appointment models
       const appointment = await Appointment.findById(user.appointmentId);
-    
+
       if (appointment) {
         const data: any = {
           username: user.username,
@@ -88,7 +88,31 @@ const getG2Test = async (req: Request, res: Response) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
+const getG2Status = async (req: Request, res: Response) => {
+  try {
+    const user = await getUserData(req as IUserRequest);
+    console.log(user);
+    if (user) {
+      const data: any = {
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        isG2TestPassed: user.isG2TestPassed,
+        comments: user.comments,
+        message: "G2 Status Fetched Successfully",
+        statusCode: 200,
+      };
 
+      res.render("g2Status", {
+        success: true,
+        data,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
 const postG2Test = async (req: Request, res: Response) => {
   const user = await getUserData(req as IUserRequest);
   const {
@@ -159,7 +183,7 @@ const postG2Test = async (req: Request, res: Response) => {
       errors: validationErrors,
     });
   }
-
+  console.log(dataToSend, "dataToSend");
   try {
     const updatedUser = await User.findByIdAndUpdate(
       user?._id,
@@ -170,22 +194,10 @@ const postG2Test = async (req: Request, res: Response) => {
     );
 
     if (!updatedUser) {
+      console.log(updatedUser, "updatedUser");
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Updated user data
-    // const updatedUserData = {
-    //   username: updatedUser.username,
-    //   userType: updatedUser.userType,
-    //   ...dataToSend,
-    // };
     return res.redirect("/appointmentSlot");
-    // return res.render("appointmentSlot", {
-    //   statusCode: 200,
-    //   success: true,
-    //   data: { username: user?.username },
-    //   message: "User data updated successfully",
-    // });
   } catch (error: any) {
     return res.status(500).json({ error: error.message });
   }
@@ -360,9 +372,7 @@ const bookAppointment = async (req: Request, res: Response) => {
       );
 
       if (updatedUser) {
-        res.redirect("/g2Test");
-        // The user was found and updated
-        // Proceed with any additional logic if needed
+        res.redirect("/g2Status");
       } else {
         // The user was not found
         return res.status(500).json({ error: "User not found." });
@@ -380,6 +390,7 @@ const bookAppointment = async (req: Request, res: Response) => {
 };
 
 export default {
+  getG2Status,
   getG2Test,
   getGTest,
   postG2Test,

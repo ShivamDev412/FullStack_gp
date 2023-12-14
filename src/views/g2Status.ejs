@@ -1,0 +1,49 @@
+<!-- result.ejs -->
+
+<%- include("layout/header") %>
+
+<main class="d-flex justify-content-center align-items-center min-vh-100 custom-padding">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-center mb-4">Test Results</h2>
+
+            <!-- Status Section -->
+            <div class="mb-3 d-flex">
+              <p><b>Status: </b></p>
+              <% if (data.isG2TestPassed === null) { %>
+                <p>Pending</p>
+              <% } else if (data.isG2TestPassed) { %>
+                <p>Passed</p>
+              <% } else { %>
+                <p>Failed</p>
+              <% } %>
+            </div>
+
+           <% if (data.comments.length) { %>
+            
+         
+            <div class="mb-3">
+              <h4>Comments:</h4>
+              <ul>
+                <% data.comments.forEach((comment) => { %>
+                  <li><%= comment.text %></li>
+                <% }); %>
+              </ul>
+            </div>
+            <% } %>
+            <% if (data.isG2TestPassed === false) { %>
+              <button class="btn btn-primary" onclick="bookAppointment()">Book Appointment Again</button>
+            <% } else if (data.isG2TestPassed) { %>
+              <button class="btn btn-success" onclick="goToG()">Go to G Test</button>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include("layout/footer") %>

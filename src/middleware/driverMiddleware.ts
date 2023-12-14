@@ -12,12 +12,17 @@ const checkUserTypeMiddleware = async (
     if (
       (user.userType === "Driver" && req.path.startsWith("/driver")) ||
       req.path.startsWith("/gTest") ||
-      req.path.startsWith("/g2Test")
+      req.path.startsWith("/g2Test") ||
+      req.path.startsWith("/g2Status")
     )
       next();
-    else if (user.userType === "Examiner" && req.path.startsWith("/examiner"))
+    else if (
+      (user.userType === "Examiner" && req.path.startsWith("/examiner")) ||
+      req.path.startsWith("/updateTestResult")
+    )
       next();
-    else if (user.userType === "Admin" && req.path.startsWith("/appointment")) next();
+    else if (user.userType === "Admin" && req.path.startsWith("/appointment"))
+      next();
     else {
       res.status(401).send("<h1>Access Denial</h1>");
     }

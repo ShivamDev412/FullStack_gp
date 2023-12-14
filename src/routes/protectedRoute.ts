@@ -13,6 +13,7 @@ import checkUserTypeMiddleware from "../middleware/driverMiddleware";
 
 const routes = Router();
 const {
+  G2STATUS,
   G2TEST,
   GTEST,
   UPDATE_CAR_DETAILS,
@@ -25,8 +26,10 @@ const {
   FIND_APPOINTMENT_SLOTS,
   APPOINTMENT_SLOT,
   BOOK_APPOINTMENT_SLOT,
+  UPDATE_TEST_RESULTS,
 } = endpoints;
 const {
+  getG2Status,
   getG2Test,
   postG2Test,
   getGTest,
@@ -36,8 +39,14 @@ const {
   getAppointmentSlot,
   bookAppointment,
 } = testController;
-const { getExaminer } = examinerController;
-
+const { getExaminer, updateTestResults } = examinerController;
+routes.post(
+  UPDATE_TEST_RESULTS,
+  protectRoute,
+  checkUserTypeMiddleware,
+  updateTestResults
+);
+routes.get(G2STATUS, protectRoute, getG2Status);
 routes.get(G2TEST, protectRoute, checkUserTypeMiddleware, getG2Test);
 routes.post(G2TEST, protectRoute, checkUserTypeMiddleware, postG2Test);
 routes.get(GTEST, protectRoute, checkUserTypeMiddleware, getGTest);

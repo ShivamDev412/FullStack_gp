@@ -11,6 +11,10 @@ interface UserType extends Document {
   age: number;
   licenseNumber: string;
   appointmentId: string;
+  testType:string,
+  isG2TestPassed:boolean | null;
+  isGTestPassed:boolean | null;
+  comments: Array<any>
   carDetails: {
     make: string;
     model: string;
@@ -46,6 +50,18 @@ const User = new mongoose.Schema<UserType>({
     type: String,
     default: "",
   },
+  testType: {
+    type: String,
+    default: "G2",
+  },
+  isG2TestPassed: {
+    type: Boolean,
+    default: null,
+  },
+  isGTestPassed: {
+    type: Boolean,
+    default: null,
+  },
   lastName: {
     type: String,
     default: "",
@@ -62,6 +78,7 @@ const User = new mongoose.Schema<UserType>({
     type: String,
     default: "",
   },
+  comments: [],
   carDetails: {
     make: {
       type: String,

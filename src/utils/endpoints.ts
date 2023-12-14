@@ -4,6 +4,7 @@ const endpoints = {
   SIGNUP: "/signup",
   LOGOUT: "/logout",
   G2TEST: "/g2Test",
+  G2STATUS: "/g2Status",
   GTEST: "/gTest",
   UPDATE_CAR_DETAILS: "/gTest",
   DRIVER_NAVIGATION: "/driverNavigation",
@@ -14,6 +15,7 @@ const endpoints = {
   SUCCESS_APPOINTMENT: "/successAppointment",
   APPOINTMENT_SLOT: "/appointmentSlot",
   FIND_APPOINTMENT_SLOTS: "/findAppointmentSlot",
-  BOOK_APPOINTMENT_SLOT: "/bookAppointmentSlot"
+  BOOK_APPOINTMENT_SLOT: "/bookAppointmentSlot",
+  UPDATE_TEST_RESULTS:"/updateTestResult",
 };
 export default endpoints;

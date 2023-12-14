@@ -116,7 +116,7 @@
           <p class="mx-2">Year: <%= data.carDetails?.year %></p>
           <p class="mx-2">Plate Number: <%= data.carDetails?.plateNumber %></p>
         </div>
-        <a href="/gTest" class="btn btn-primary btn-lg w-100">Go To G Test</a>
+        <a href="/appointmentSlot" class="btn btn-primary btn-lg w-100">Book Appointment</a>
         <% } %>
       </div>
     </div>
@@ -127,6 +127,6 @@
 <script>
   const message = document.getElementById("responseMessage");
   document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => (message.style.display = "none"), 3000);
+    setTimeout(() => (message?.style?.display = "none"), 3000);
   });
 </script>

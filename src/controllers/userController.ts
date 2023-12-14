@@ -42,10 +42,27 @@ const postLogin = async (req: Request, res: Response) => {
       );
       // Redirect based on user userType
       if (user.userType === "Driver") {
-        if (user.appointmentId === "" && user.licenseNumber !== "") {
-          res.redirect("appointmentSlot");
-        } else if (user.appointmentId !== "") res.redirect("/gTest");
-        else res.redirect("/driverNavigation");
+        if (
+          user.appointmentId === "" &&
+          user.licenseNumber !== "" &&
+          user.isG2TestPassed === null
+        ) {
+          res.redirect("/appointmentSlot");
+        } else if (
+          user.isG2TestPassed &&
+          user.isGTestPassed === null &&
+          user.testType === "G"
+        ) {
+          res.redirect("/gTest");
+        } else if (user.isG2TestPassed === null && user.licenseNumber === "") {
+          res.redirect("/g2Test");
+        } else if (
+          user.isG2TestPassed !== null &&
+          user.licenseNumber !== "" &&
+          user.isGTestPassed === null
+        ) {
+          res.redirect("/g2Status");
+        } else res.redirect("/driverNavigation");
       } else if (user.userType === "Examiner") {
         res.redirect("/examiner");
       } else if (user.userType === "Admin") {

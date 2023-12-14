@@ -1,7 +1,96 @@
 <%- include("layout/header") %>
+
 <main
   class="d-flex justify-content-center align-items-center min-vh-100 custom-padding"
 >
-  <h2>Examiner</h2>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h2 class="text-center mb-4 text-white">Examiner</h2>
+
+        <ul id="userList" class="list-group">
+          <% data.usersWithAppointments.forEach((user, index) => { %>
+          <li class="list-group-item">
+            <div>
+              <div>
+                <span><%= user.name %></span>
+                <p>
+                  <strong>Car Details:</strong> <%= user.carDetails.make %> <%=
+                  user.carDetails.model %>
+                </p>
+                <p><strong>Test Type:</strong> <%= user.testType %></p>
+                <p>
+                  <strong>Appointment Date:</strong> <%= new
+                  Date(user.appointmentDate).toLocaleDateString('en-US', {
+                  timeZone: 'UTC', month: 'long', day: 'numeric', year:
+                  'numeric' }) %>
+                </p>
+
+                <p>
+                  <strong>Appointment Time:</strong> <%= user.appointmentTime %>
+                </p>
+              </div>
+
+              <button
+                class="btn btn-primary"
+                onclick="toggleDetails('<%= user._id %>')"
+              >
+                Write Results
+              </button>
+            </div>
+
+
+            <div
+              id="details<%= user._id %>"
+              class="details-section"
+              style="display: none"
+            >
+              <form action="/updateTestResult?userId=<%= user._id %>&testType=<%= user.testType %>" method="post">
+                <div class="mb-3">
+                  <label for="comments"><strong>Comments:</strong></label>
+                  <textarea
+                    id="comments"
+                    name="comments"
+                    class="form-control"
+                    required
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="passFail"><strong>Pass/Fail:</strong></label>
+                  <select
+                    id="passFail"
+                    name="passFail"
+                    class="form-control"
+                    required
+                  >
+                    <option value="pass">Pass</option>
+                    <option value="fail">Fail</option>
+                  </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+              
+              
+            </div>
+          </li>
+          <% });%> 
+          <% if (data.usersWithAppointments.length === 0) { %>
+            <p class="text-white text-center">No Appointments yet.</p>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </div>
 </main>
+
+<script>
+  function toggleDetails(userId) {
+    if (userId) {
+      const detailsSection = document.getElementById(`details${userId}`);
+      detailsSection.style.display =
+        detailsSection.style.display === "none" ? "block" : "none";
+    }
+  }
+</script>
+
 <%- include("layout/footer") %>

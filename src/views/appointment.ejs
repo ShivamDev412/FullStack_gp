@@ -9,7 +9,7 @@
       <div class="col-md-6 offset-md-3">
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title text-center mb-4">Appointment</h2>
+            <h2 class="card-title text-center mb-4">Create Appointments</h2>
             <form action="/getAvailableTimeSlots" method="post">
               <div class="mb-3">
                 <label for="date" class="form-label">Date:</label>
@@ -49,8 +49,13 @@
                 <% }); %>
               </div>
             </div>
-            <button class="btn btn-primary" onclick="bookAppointment()">
-              Book Appointment
+            <button
+              class="btn btn-primary"
+              onclick="bookAppointment()"
+              id="createAppointmentBtn"
+              disabled
+            >
+              Create Appointment
             </button>
             <% } %>
           </div>
@@ -61,10 +66,12 @@
 </main>
 <script>
   let time;
+
+  const createAppointmentBtn = document.getElementById("createAppointmentBtn");
   function selectTime(selectedTime) {
     time = selectedTime;
+    createAppointmentBtn.disabled = false;
   }
-
   async function bookAppointment() {
     // const selectedTime = document.getElementById("selectedTime").value;
     const selectedDate = document.getElementById("date").value;
