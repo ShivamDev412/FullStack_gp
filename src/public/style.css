@@ -1,8 +1,9 @@
 body {
-    background-color:#464d53 !important;
+    background-color: #2c3e50 !important;
     min-height:100vh;
     min-width:100vw;
     overflow-x: hidden;
+    margin-top: 80px;
 }
 h1, a {
     color:#ffffff !important;
@@ -38,3 +39,25 @@ input[type=number] {
 .custom-padding {
     padding-top: 90px; /* Adjust the value as needed */
   }
+
+/* Add this to style.css */
+
+
+
+.banner-container img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px; /* Optional: Add rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+}
+
+.banner-container h1 {
+  font-size: 2.5rem;
+}
+
+.banner-container p {
+  font-size: 1.25rem;
+}
+
+/* Adjust the styles as needed */
