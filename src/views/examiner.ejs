@@ -7,7 +7,18 @@
     <div class="row">
       <div class="col-md-6 offset-md-3">
         <h2 class="text-center mb-4 text-white">Examiner</h2>
-
+        <form id="filterForm" method="post" action="/examiner" class="mt-3" style="width: 35%; margin-bottom: 20px;">
+          <div class="input-group">
+            <select name="testType" id="testType" class="form-select" aria-label="Select Test Type">
+              <option value="">All</option>
+              <option value="G2" <%= data.testType === "G2" ? 'selected' : '' %>>G2</option>
+              <option value="G" <%= data.testType === "G" ? 'selected' : '' %>>G</option>
+            </select>
+            <button type="submit" class="btn btn-primary">Apply Filter</button>
+          </div>
+        </form>
+        
+        
         <ul id="userList" class="list-group">
           <% data.usersWithAppointments.forEach((user, index) => { %>
           <li class="list-group-item">
@@ -39,13 +50,15 @@
               </button>
             </div>
 
-
             <div
               id="details<%= user._id %>"
               class="details-section"
               style="display: none"
             >
-              <form action="/updateTestResult?userId=<%= user._id %>&testType=<%= user.testType %>" method="post">
+              <form
+                action="/updateTestResult?userId=<%= user._id %>&testType=<%= user.testType %>"
+                method="post"
+              >
                 <div class="mb-3">
                   <label for="comments"><strong>Comments:</strong></label>
                   <textarea
@@ -69,13 +82,10 @@
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
               </form>
-              
-              
             </div>
           </li>
-          <% });%> 
-          <% if (data.usersWithAppointments.length === 0) { %>
-            <p class="text-white text-center">No Appointments yet.</p>
+          <% });%> <% if (data.usersWithAppointments.length === 0) { %>
+          <p class="text-white text-center">No Appointments yet.</p>
           <% } %>
         </ul>
       </div>
@@ -84,6 +94,25 @@
 </main>
 
 <script>
+  const filterForm = document.getElementById("filterForm");
+  const testTypeFilter = document.getElementById("testTypeFilter");
+
+  testTypeFilter.addEventListener("change", async () => {
+    const selectedFilter = testTypeFilter.value;
+
+    try {
+      const response = await fetch(`/examiner/users?filter=${selectedFilter}`);
+      const data = await response.json();
+
+      if (response.ok) {
+        console.log(data);
+      } else {
+        console.error("Error:", data.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  });
   function toggleDetails(userId) {
     if (userId) {
       const detailsSection = document.getElementById(`details${userId}`);

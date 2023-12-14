@@ -113,6 +113,31 @@ const getG2Status = async (req: Request, res: Response) => {
     res.status(500).send({ message: "Internal Server Error" });
   }
 };
+const getGStatus = async (req: Request, res: Response) => {
+  try {
+    const user = await getUserData(req as IUserRequest);
+    console.log(user);
+    if (user) {
+      const data: any = {
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        isGTestPassed: user.isGTestPassed,
+        comments: user.comments,
+        message: "G Status Fetched Successfully",
+        statusCode: 200,
+      };
+
+      res.render("gStatus", {
+        success: true,
+        data,
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ message: "Internal Server Error" });
+  }
+};
 const postG2Test = async (req: Request, res: Response) => {
   const user = await getUserData(req as IUserRequest);
   const {
@@ -206,6 +231,17 @@ const postG2Test = async (req: Request, res: Response) => {
 const getGTest = async (req: Request, res: Response) => {
   try {
     const user = await getUserData(req as IUserRequest);
+    if (user?.testType === "G2") {
+      await User.findByIdAndUpdate(
+        user?._id,
+        {
+          testType: "G",
+        },
+        {
+          new: true,
+        }
+      );
+    }
     if (user) {
       res.render("gTest", {
         statusCode: 200,
@@ -367,12 +403,19 @@ const bookAppointment = async (req: Request, res: Response) => {
     if (user) {
       const updatedUser = await User.findByIdAndUpdate(
         user._id,
-        { appointmentId: appointment._id },
+        {
+          appointmentId: appointment._id,
+          isG2TestPassed:
+            user.isG2TestPassed === false ? null : user.isG2TestPassed,
+          isGTestPassed:
+            user.isGTestPassed === false ? null : user.isGTestPassed,
+        },
         { new: true }
       );
 
       if (updatedUser) {
-        res.redirect("/g2Status");
+        if (user.testType === "G2") res.redirect("/g2Status");
+        else res.redirect("/gStatus");
       } else {
         // The user was not found
         return res.status(500).json({ error: "User not found." });
@@ -390,6 +433,7 @@ const bookAppointment = async (req: Request, res: Response) => {
 };
 
 export default {
+  getGStatus,
   getG2Status,
   getG2Test,
   getGTest,
