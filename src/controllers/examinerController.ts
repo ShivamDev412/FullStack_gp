@@ -9,14 +9,12 @@ const getExaminer = async (req: Request, res: Response) => {
     const usersWithAppointments = await User.find({
       appointmentId: { $ne: "" },
     });
-    console.log(usersWithAppointments, "usersWithAppointments");
     const userData = await Promise.all(
       usersWithAppointments.map(async (user) => {
         // Retrieve appointment details for each user
         const appointment = await Appointment.findOne({
           _id: user.appointmentId,
         });
-        console.log(appointment);
         return {
           _id: user._id,
           carDetails: user.carDetails,
@@ -46,12 +44,52 @@ const getExaminer = async (req: Request, res: Response) => {
     res.status(500).send({ message: "Something went wrong" });
   }
 };
+const postExaminer = async (req: Request, res: Response) => {
+  try {
+    const { testType } = req.body;
+    const filter = testType
+      ? { appointmentId: { $ne: "" }, testType }
+      : { appointmentId: { $ne: "" } };
+    const usersWithAppointments = await User.find(filter);
+    const userData:any = await Promise.all(
+      usersWithAppointments.map(async (user) => {
+        const appointment = await Appointment.findOne({
+          _id: user.appointmentId,
+        });
+        return {
+          _id: user._id,
+          carDetails: user.carDetails,
+          name: `${user.firstName} ${user.lastName}`,
+          testType: user.testType,
+          appointmentDate: appointment?.date,
+          appointmentTime: appointment?.time,
+        };
+      })
+    );
+    const user = await getUserData(req as IUserRequest);
+
+    if (user) {
+      return res.render("examiner", {
+        statusCode: 200,
+        success: true,
+        data: {
+          username: user.username,
+          usersWithAppointments: userData,
+          testType
+        },
+        errors: null,
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ message: "Something went wrong" });
+  }
+};
+
 const updateTestResults = async (req: Request, res: Response) => {
   try {
     const { userId, testType } = req.query;
     const { comments, passFail } = req.body;
-    console.log(userId);
-    // Retrieve the user by ID
     const user = await User.findById(userId);
 
     if (!user) {
@@ -59,8 +97,8 @@ const updateTestResults = async (req: Request, res: Response) => {
         .status(404)
         .json({ success: false, message: "User not found" });
     }
-    let isG2TestPassed = null;
-    let isGTestPassed = null;
+    let isG2TestPassed = user.isG2TestPassed;
+    let isGTestPassed = user.isGTestPassed;
     if (testType === "G2") {
       isG2TestPassed = passFail === "pass";
     } else if (testType === "G") {
@@ -88,6 +126,7 @@ const updateTestResults = async (req: Request, res: Response) => {
   }
 };
 export default {
+  postExaminer,
   getExaminer,
   updateTestResults,
 };

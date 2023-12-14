@@ -22,12 +22,7 @@
               <strong>Age:</strong>
               <%= data.age %>
             </p>
-            <p>
-              <strong>Appointment:</strong>
-              <% if (data.appointmentDate && data.appointmentTime) { %> <%=
-              data.appointmentDate %> at <%= data.appointmentTime %> <% } else {
-              %> No appointment scheduled. <% } %>
-            </p>
+        
             <p>
               <strong>License Number:</strong>
               <%= data.licenseNumber %>
@@ -91,6 +86,13 @@
                 Update Car Details
               </button>
             </form>
+            <button onclick="bookAppointment()"
+                type="button"
+                class="btn btn-primary w-100 my-3"
+                id="updateCarDetailsButton"
+              >
+                Book Appointment
+              </button>
           </div>
         </div>
         <% } else {%>
@@ -104,3 +106,8 @@
 </main>
 
 <%- include("layout/footer") %>
+<script>
+  function bookAppointment() {
+    window.location.href="appointmentSlot"
+  }
+</script>

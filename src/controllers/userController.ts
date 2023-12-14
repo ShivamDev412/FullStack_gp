@@ -62,7 +62,12 @@ const postLogin = async (req: Request, res: Response) => {
           user.isGTestPassed === null
         ) {
           res.redirect("/g2Status");
-        } else res.redirect("/driverNavigation");
+        } else if (user.isG2TestPassed && user.isGTestPassed) {
+          res.redirect("/gStatus");
+        } else if (user.isG2TestPassed && user.isGTestPassed === false) {
+          res.redirect("/gStatus");
+        }
+        res.redirect("/driverNavigation");
       } else if (user.userType === "Examiner") {
         res.redirect("/examiner");
       } else if (user.userType === "Admin") {

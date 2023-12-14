@@ -10,13 +10,14 @@
       <div class="col-md-6 offset-md-3">
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title text-center mb-4">G2 Test Results</h2>
+            <h2 class="card-title text-center mb-4">G Test Results</h2>
 
+            <!-- Status Section -->
             <div class="mb-3 d-flex">
               <p><b>Status: </b></p>
-              <% if (data.isG2TestPassed === null) { %>
+              <% if (data.isGTestPassed === null) { %>
               <p>Pending</p>
-              <% } else if (data.isG2TestPassed) { %>
+              <% } else if (data.isGTestPassed) { %>
               <p>Passed</p>
               <% } else { %>
               <p>Failed</p>
@@ -37,13 +38,9 @@
                 <% }); %>
               </ul>
             </div>
-            <% } %> <% if (data.isG2TestPassed === false) { %>
+            <% } %> <% if (data.isGTestPassed === false) { %>
             <button class="btn btn-primary" onclick="bookAppointment()">
               Book Appointment Again
-            </button>
-            <% } else if (data.isG2TestPassed) { %>
-            <button class="btn btn-success" onclick="goToG()">
-              Go to G Test
             </button>
             <% } %>
           </div>
@@ -55,11 +52,11 @@
 
 <%- include("layout/footer") %>
 <script>
-  function bookAppointment() {
-    window.location.href = "/appointmentSlot";
-  }
   function goToG() {
     window.location.href = "/gTest";
+  }
+  function bookAppointment() {
+    window.location.href = "/appointmentSlot";
   }
   function highlightCommentSection() {
     document.querySelector(".comment-section").style.borderColor = "#007bff";

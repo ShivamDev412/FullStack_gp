@@ -5,6 +5,7 @@ const endpoints = {
   LOGOUT: "/logout",
   G2TEST: "/g2Test",
   G2STATUS: "/g2Status",
+  GSTATUS: "/gStatus",
   GTEST: "/gTest",
   UPDATE_CAR_DETAILS: "/gTest",
   DRIVER_NAVIGATION: "/driverNavigation",
